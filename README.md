@@ -80,6 +80,22 @@ http://127.0.0.1:8000/
 ```
 
 ---
+## Project Screenshots
+
+### Home Page
+![Home](screenshots/Home.png)
+
+### Product List
+![Products](screenshots/Product_List.png)
+
+### Product Details
+![Details](screenshots/Product_Details.png)
+
+### Categories
+![Categories](screenshots/Categories.png)
+
+### Admin Panel
+![Admin](screenshots/Admin_View.png)
 
 ## Author
 
