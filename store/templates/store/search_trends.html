@@ -1,0 +1,55 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Search Trends</h1>
+    <p class="text-center mb-5">Explore the latest trends in furniture shopping.</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Trending Products</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">Modern Sofa Sets</li>
+                        <li class="list-group-item">Minimalist Dining Tables</li>
+                        <li class="list-group-item">Space-Saving Storage Units</li>
+                        <li class="list-group-item">Luxury Recliners</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Popular Categories</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">Wooden Furniture</li>
+                        <li class="list-group-item">Office Chairs</li>
+                        <li class="list-group-item">Smart Home Decor</li>
+                        <li class="list-group-item">Outdoor Patio Sets</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+/* styles.css */
+body {
+    background-color: #f8f9fa; /* Light background for contrast */
+}
+
+.card {
+    border-radius: 10px; /* Rounded corners for cards */
+}
+
+.card-header {
+    font-size: 1.5rem; /* Larger font for headers */
+}

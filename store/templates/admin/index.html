@@ -1,0 +1,22 @@
+{% extends 'admin/index.html' %}
+{% load i18n %}
+
+{% block content %}
+  <div class="dashboard-stats" style="display: flex; gap: 20px; margin-bottom: 20px;">
+    <!-- New Orders -->
+    <div class="stat-card" style="flex: 1; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      <h3 style="margin: 0; color: #dc3545;"><i class="fas fa-bell"></i> New Orders</h3>
+      <p style="font-size: 24px; margin: 10px 0;">{{ new_orders }}</p>
+      <a href="{% url 'admin:store_order_changelist' %}?is_read__exact=0" style="color: #417690; text-decoration: none;">View all new orders →</a>
+    </div>
+  </div>
+
+  <!-- Generate Full Report Button -->
+  <div style="margin-bottom: 20px;">
+    <a href="{% url 'admin:generate-full-report' %}" class="btn btn-high btn-success" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 4px; text-decoration: none;">
+      <i class="fas fa-download"></i> Generate Full Report
+    </a>
+  </div>
+
+  {{ block.super }}
+{% endblock %}

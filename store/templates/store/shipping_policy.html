@@ -1,0 +1,71 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-primary fw-bold">Shipping Policy</h1>
+    <p class="text-muted">Last updated: March 2025</p>
+
+    <h3>Delivery Locations</h3>
+    <p>
+        We currently deliver across all major cities in Gujarat. Delivery to remote locations may take longer than usual.
+    </p>
+
+    <h3>Delivery Time</h3>
+    <ul>
+        <li><strong>Standard Delivery:</strong> 5-7 business days.</li>
+        <li><strong>Express Delivery:</strong> 2-3 business days (Available in select cities).</li>
+    </ul>
+
+    <h3>Shipping Charges</h3>
+    <p>
+        <strong>Free Shipping</strong> on orders above ₹999. For orders below ₹999, a flat shipping fee of ₹50 will be applied.
+    </p>
+
+    <h3>Cash on Delivery (COD)</h3>
+    <p>
+        We only accept <strong>Cash on Delivery (COD)</strong> as a payment method. No online payments are required. 
+        The full payment is collected in cash at the time of delivery.
+    </p>
+
+    <h3>Order Processing</h3>
+    <p>
+        Orders are processed within 24-48 hours. You will receive a confirmation message once your order is shipped.
+    </p>
+
+    <h3>Missed or Delayed Deliveries</h3>
+    <p>
+        If you are unavailable at the time of delivery, our courier partner will attempt to deliver the package again. 
+        If the order is not received within three attempts, it will be returned to us.
+    </p>
+
+    <h3>Need Assistance?</h3>
+    <p>
+        If you have any questions about shipping, feel free to contact us at 
+        <a href="mailto:stylenestt25@gmail.com">stylenestt25@gmail.com</a> or call us at <strong>(555) 123-4567</strong>.
+    </p>
+</div>
+
+<!-- CSS Styling -->
+<style>
+    .container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    h3 {
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 5px;
+        margin-top: 20px;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+
+    ul li {
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card shadow p-4">
+          <h3 class="mb-4">Checkout</h3>
+          <form method="post" id="checkoutForm">
+            {% csrf_token %}
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="username" class="form-label">Full Name</label>
+                <input type="text" name="username" id="username" class="form-control" required />
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" id="email" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="row g-3 mt-2">
+              <div class="col-md-6">
+                <label for="zipcode" class="form-label">Zip Code</label>
+                <input type="text" name="zipcode" id="zipcode" class="form-control" required />
+              </div>
+              <div class="col-md-6">
+                <label for="city" class="form-label">City</label>
+                <input type="text" name="city" id="city" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="mt-2">
+              <label for="shipping_address" class="form-label">Shipping Address</label>
+              <textarea name="shipping_address" id="shipping_address" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <!-- Payment Method Selection -->
+            <div class="mt-3">
+              <label class="form-label">Payment Method</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="payment_method" id="card" value="card" checked />
+                <label class="form-check-label" for="card">Pay with Card <i class="fas fa-credit-card ms-2"></i></label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod" />
+                <label class="form-check-label" for="cod">Cash on Delivery <i class="fas fa-money-bill-wave ms-2"></i></label>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <button type="button" class="btn btn-primary w-100" onclick="validateCheckout()">Place Order</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Add Confirmation Modal -->
+      <div class="modal fade" id="confirmationModal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Confirm Order</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to place this order?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary" onclick="submitOrder()">Confirm Order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <!-- Order Summary Card -->
+        <div class="card shadow p-3">
+          <h4 class="mb-3">Order Summary</h4>
+          {% for item in cart.items.all %}
+            <div class="d-flex justify-content-between mb-2">
+              <span>{{ item.product.name }} × {{ item.quantity }}</span>
+              <span>₹{{ item.get_cost }}</span>
+            </div>
+          {% endfor %}
+          <hr />
+          <div class="d-flex justify-content-between">
+            <strong>Total:</strong>
+            <strong>₹{{ cart.get_total }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Trigger the modal on checkout button click
+    function validateCheckout() {
+      const city = document.getElementById('city').value.trim().toLowerCase();
+      const shippingAddress = document.getElementById('shipping_address').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const zipcode = document.getElementById('zipcode').value.trim();
+
+      const allowedCities = [
+        'nadiad', 'ahmedabad', 'surat', 'vadodara', 'rajkot', 'baroda', 'bhavnagar', 
+        'anand', 'jamnagar', 'gandhinagar', 'junagadh', 'navsari', 'valsad', 'kutch', 
+        'diu', 'porbandar', 'mehsana', 'bharuch', 'godhra', 
+        // Allow case-insensitive matching
+        'NADIAD', 'AHMEDABAD', 'SURAT', 'VADODARA', 'RAJKOT', 'BARODA', 'BHAVNAGAR', 
+        'ANAND', 'JAMNAGAR', 'GANDHINAGAR', 'JUNAGADH', 'NAVSARI', 'VALSAD', 'KUTCH', 
+        'DIU', 'PORBANDAR', 'MEHSANA', 'BHARUCH', 'GODHRA'
+      ];
+    
+      if (!allowedCities.includes(city)) {
+        alert('We only deliver within Gujarat. Please enter a valid city in Gujarat.');
+        return;
+      }
+      
+      // Validate shipping address
+    if (shippingAddress.length < 2) {
+      alert('Shipping address is too short.');
+      return;
+    }
+
+    // Check if it's only numbers
+    if (/^\d+$/.test(shippingAddress)) {
+      alert('Shipping address cannot be only numbers.');
+      return;
+    }
+
+    // Check if it's a single character or just symbols
+    if (/^[^a-zA-Z0-9]*$/.test(shippingAddress)) {
+      alert('Please enter a valid shipping address.');
+      return;
+    }
+
+    // ✅ Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    // ✅ Zip Code validation
+    const zipRegex = /^[0-9]{6}$/;
+    if (!zipRegex.test(zipcode)) {
+      alert('Please enter a valid 6-digit zip code.');
+      return;
+    }
+    
+      // Open the confirmation modal
+      const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+      modal.show();
+    }
+
+    // Submit the order after confirmation
+    function submitOrder() {
+      document.getElementById('checkoutForm').submit();
+    }
+  </script>
+{% endblock %}

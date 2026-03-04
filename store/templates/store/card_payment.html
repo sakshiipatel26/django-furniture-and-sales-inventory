@@ -1,0 +1,106 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header">
+          <h3 class="mb-0">Card Payment</h3>
+        </div>
+        <div class="card-body">
+          <form method="post" id="cardPaymentForm" action="{% url 'process_payment' %}">
+            {% csrf_token %}
+            <input type="hidden" name="order_id" value="{{ order_id }}">
+            
+            <div class="mb-3">
+              <label for="card_number" class="form-label">Card Number</label>
+              <input type="text" class="form-control" id="card_number" name="card_number" 
+                     required maxlength="19" placeholder="1234 5678 9012 3456">
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="expiry_date" class="form-label">Expiry Date</label>
+                <input type="text" class="form-control" id="expiry_date" name="expiry_date" 
+                       required pattern="\d{2}/\d{2}" placeholder="MM/YY">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <input type="password" class="form-control" id="cvv" name="cvv" 
+                       required pattern="\d{3,4}" maxlength="4" placeholder="123">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="card_holder" class="form-label">Card Holder Name</label>
+              <input type="text" class="form-control" id="card_holder" name="card_holder" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Pay ₹{{ amount }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #card_number {
+    letter-spacing: 0.5px;
+    font-family: monospace;
+  }
+</style>
+
+<script>
+document.getElementById('cardPaymentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get card details
+    let cardNumber = document.getElementById('card_number').value.replace(/\s/g, '');
+    let cardHolder = document.getElementById('card_holder').value;
+    let expiryDate = document.getElementById('expiry_date').value;
+    let cvv = document.getElementById('cvv').value;
+    
+    // Basic validation
+    if (cardNumber.length !== 16) {
+        alert('Please enter a valid 16-digit card number');
+        return;
+    }
+    
+    if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+        alert('Please enter a valid expiry date (MM/YY)');
+        return;
+    }
+    
+    if (!/^\d{3,4}$/.test(cvv)) {
+        alert('Please enter a valid CVV');
+        return;
+    }
+    
+    // If validation passes, submit the form
+    this.submit();
+});
+
+// Format card number with spaces
+document.getElementById('card_number').addEventListener('input', function(e) {
+  // Remove all non-digits
+  let value = this.value.replace(/\D/g, '');
+  
+  // Add space after every 4 digits
+  value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+  
+  // Update the input value
+  this.value = value;
+});
+
+// Format expiry date
+document.getElementById('expiry_date').addEventListener('input', function(e) {
+  let value = this.value.replace(/\D/g, '');
+  if (value.length >= 2) {
+    value = value.slice(0,2) + '/' + value.slice(2);
+  }
+  this.value = value;
+});
+</script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-primary">Brand Guidelines</h1>
+    <p class="text-center text-muted">Ensure consistency with our branding across all platforms.</p>
+
+    <section class="mt-4">
+        <h2 class="text-darkblue">Logo Usage</h2>
+        <p>Our logo should always be used in its original form without modifications. Maintain clear spacing around the logo to ensure visibility.</p>
+        <img src="{% static '6.png' %}" alt="Brand Logo" class="img-fluid d-block mx-auto" style="width: 300px; height: auto;"  >
+    </section>
+
+    <section class="mt-4">
+        <h2 class="text-darkblue">Colors</h2>
+        <p>Our brand colors define our identity. Use these colors consistently.</p>
+        <div class="d-flex justify-content-around">
+            <div style="background-color: #0D47A1; width: 100px; height: 100px; color: white; text-align: center; padding: 10px;">#0D47A1</div>
+            <div style="background-color: #1976D2; width: 100px; height: 100px; color: white; text-align: center; padding: 10px;">#1976D2</div>
+            <div style="background-color: #64B5F6; width: 100px; height: 100px; color: white; text-align: center; padding: 10px;">#64B5F6</div>
+        </div>
+    </section>
+
+    <section class="mt-4">
+        <h2 class="text-darkblue">Typography</h2>
+        <p>We use the Poppins font family for all text content. It should be used in a clean and readable manner.</p>
+        <p style="font-family: 'Poppins', sans-serif; font-size: 20px;">Example: "StyleNest - Elevating Your Space"</p>
+    </section>
+
+    <section class="mt-4">
+        <h2 class="text-darkblue">Imagery</h2>
+        <p>Our brand imagery should reflect high-quality, elegant, and modern furniture styles.</p>
+    </section>
+
+    <section class="mt-4">
+        <h2 class="text-darkblue">Tone of Voice</h2>
+        <p>Our brand tone is professional, yet friendly and approachable. We aim to create a sense of warmth and trust in our communication.</p>
+    </section>
+</div>
+{% endblock %}

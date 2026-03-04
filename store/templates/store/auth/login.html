@@ -1,0 +1,184 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="login-container">
+    <!-- Left Side: Background Image & Welcome Text -->
+    <div class="login-left">
+        <div class="overlay"></div>
+        <div class="welcome-text">
+            <img src="/static/login_img.png">
+        </div>
+    </div>
+
+    <!-- Right Side: Login Form -->
+    <div class="login-right">
+        <div class="login-card">
+            <h2 class="text-center">Login Account</h2>
+            <p class="text-center text-muted">Enter your details to continue</p>
+            <div class="alert alert-info mb-4">
+                <i class="fas fa-info-circle"></i> This login is for customers only. 
+                <br>Administrators please use the<br>
+                <a href="/admin/login/" class="alert-link">admin login page</a>.
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" placeholder="Password" name="password" required>
+                </div>
+
+                <div class="mb-3 text-end">
+                    <a href="{% url 'password_reset' %}">Forgot your password?</a>
+
+                </div>
+
+                <div class="form-check d-flex justify-content-center mt-3">
+                    <a href="{% url 'register' %}" class="text-primary text-decoration-none">Register</a>
+                </div>
+
+                <button type="submit" class="btn btn-login w-100">LOGIN</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+
+/* Keep Overall Page Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f6fb;
+    margin: 0;
+    padding: 0;
+}
+
+ /* Left Section (Image & Text) */
+ .login-left {
+    flex: 1;
+    background: url('/static/bg.jpg') no-repeat center center/cover;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 50px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 80, 180, 0.6);
+    z-index: 1;
+}
+
+.welcome-text {
+    position: relative;
+    z-index: 2;
+}
+
+/* Adjusting Image Size */
+    .welcome-text img {
+        max-width: 200%; /* Ensures it fits inside the container */
+        height: 500px; /* Maintains aspect ratio */
+        max-height: 800px; /* Prevents it from being too large */
+        object-fit: contain; /* Ensures the entire image is visible */
+    }
+
+
+/* Ensure Full-Page Layout */
+.login-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* ✅ Right Section (Login Form) - FIXED */
+.login-right {
+    flex: 1.2; /* Increased width to balance with left side */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    padding: 60px; /* Increased padding for a better look */
+}
+
+/* ✅ Login Card Adjustments */
+.login-card {
+    width: 100%;
+    max-width: 400px; /* Made it slightly wider */
+    background: rgba(255, 255, 255, 0.95);
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* ✅ Input Fields */
+.form-control {
+    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid #ddd;
+    width: 100%;
+    font-size: 16px;
+}
+
+/* ✅ Login Button */
+.btn-login {
+    background: linear-gradient(135deg, #0066ff, #33ccff);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 14px;
+    border-radius: 8px;
+    border: none;
+    transition: 0.3s;
+    width: 100%;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background: linear-gradient(135deg, #0044cc, #0099ff);
+    transform: translateY(-2px);
+}
+
+/* ✅ Responsive Fixes */
+@media (max-width: 992px) {
+    .login-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .login-left {
+        height: 50vh;
+    }
+
+    .login-right {
+        height: auto;
+        padding: 50px 30px;
+    }
+
+    .login-card {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .login-right {
+        padding: 30px;
+    }
+
+    .btn-login {
+        padding: 12px;
+    }
+}
+
+</style>
+{% endblock %}

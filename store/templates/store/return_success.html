@@ -1,0 +1,12 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <div class="card p-4 shadow-sm">
+        <h1 class="text-success">Return Successful!</h1>
+        <p>Your return request has been processed successfully.</p>
+        <p>The refund will be initiated at the time of pickup.</p>
+        <a href="{% url 'home' %}" class="btn btn-primary">Go to Home</a>
+    </div>
+</div>
+{% endblock %}

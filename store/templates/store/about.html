@@ -1,0 +1,97 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<!-- About Us Section -->
+<div class="text-center my-4" style="font-family: 'Poppins', sans-serif;">
+    <h2 class="about-title"><strong>About Us</strong></h2>
+    <p class="about-subtitle">Learn more about our journey and mission</p>
+</div>
+
+<!-- Content Row -->
+<div class="row align-items-center my-5" style="padding: 0 20px;">
+    <div class="col-md-6">
+        <img src="/static/about_us5.jpg" alt="About Us" class="img-fluid about-image">
+    </div>
+    <div class="col-md-6 about-text">
+        <p>
+            We are committed to providing <span style="color: #007bff; font-weight: bold;">top-quality furniture</span> combined with cutting-edge
+            <span style="color: #007bff; font-weight: bold;">AR technology</span> to help you visualize your choices in real-time. Our mission is to revolutionize furniture shopping.
+        </p>
+        <p>
+            Founded in <span style="color: #007bff; font-weight: bold;">2025</span>, our team ensures that every piece of furniture brings joy to your space.
+        </p>
+        <a href="/categories/" class="btn-custom">
+            Explore Our Products
+        </a>
+    </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="my-5">
+    <h2 class="faq-title text-center"><strong>Frequently Asked Questions (FAQ)</strong></h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <strong>How can I place an order?</strong>
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    You can place an order through our website by selecting the desired product, adding it to your cart, and proceeding to checkout. You can also visit our store for in-person purchases.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <strong>What payment methods do you accept?</strong>
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    We accept cash on delivery only.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <strong>How long does delivery take?</strong>
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Standard delivery takes 5-7 business days.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    <strong>How can I contact customer service?</strong>
+                </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    You can reach us via email at <a href="mailto:stylenestt25@gmail.com" style="color: #007bff; font-weight: bold;">stylenestt25@gmail.com</a>,
+                    call us at <a href="tel:+5551234567" style="color: #007bff; font-weight: bold;">(555) 123-4567</a>.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    <strong>Are your products covered by a warranty?</strong>
+                </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Yes, most of our furniture comes with a 1-year warranty against manufacturing defects. Warranty details vary by product.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

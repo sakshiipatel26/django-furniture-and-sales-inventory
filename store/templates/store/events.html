@@ -1,0 +1,46 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Past Events</h1>
+    <p class="text-center">Stay updated with our latest events and workshops.</p>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{% static 'event1.webp' %}" class="card-img-top" alt="Event 1">
+                <div class="card-body">
+                    <h5 class="card-title">Furniture Expo 2024</h5>
+                    <p class="card-text">Learn with us about Bombay Exhibition Center.</p>
+                    <p><strong>Date:</strong> 7-8-9 December, 2024</p>
+                    <a href="https://online.anyflip.com/qpeq/dfdl/mobile/index.html" target="_blank" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{% static 'event2.webp' %}" class="card-img-top" alt="Event 2">
+                <div class="card-body">
+                    <h5 class="card-title">Interior Design Article</h5>
+                    <p class="card-text">Learn the </p>
+                    <p><strong>Date:</strong> April 10, 2025</p>
+                    <a href="https://www.eventbrite.com/e/your-event-id" target="_blank" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{% static 'event3.webp' %}" class="card-img-top" alt="Event 3">
+                <div class="card-body">
+                    <h5 class="card-title">Sustainable Living Talk</h5>
+                    <p class="card-text">Discover how eco-friendly furniture can transform your space.</p>
+                    <p><strong>Date:</strong> May 5, 2025</p>
+                    <a href="https://www.eventbrite.com/e/your-event-id" target="_blank" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+        <!-- Left Side: Image -->
+        <div class="col-md-6 mb-4 mb-md-0" style="padding-right: 0;">
+            <img src="/static/Register.jpg"
+                 alt="Register Illustration"
+                 class="img-fluid rounded shadow"
+                 style="width: calc(90% + 1cm); max-width: none; margin-left: -0.5cm;">
+        </div>
+        
+
+        <!-- Right Side: Form -->
+        <div class="col-md-6">
+            <div class="card p-4 shadow">
+                <h2 class="text-center text-primary">Register</h2>
+                <br>
+               
+                <form method="post" id="register-form">
+                    {% csrf_token %}
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label>Username</label>
+                        <input type="text" name="username" id="username" class="form-control" required>
+                    </div>
+                    
+
+
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <div class="input-group">
+                            <input type="email" name="email" id="email" class="form-control" required>
+                            <button type="button" class="btn btn-outline-primary" id="send-otp-btn">Send OTP</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>OTP</label>
+                        <input type="text" name="otp" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input type="password" name="password1" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Confirm Password</label>
+                        <input type="password" name="password2" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a href="{% url 'login' %}" class="text-primary">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('send-otp-btn').addEventListener('click', async function () {
+        const email = document.getElementById('email').value;
+        if (!email) {
+            alert('Please enter an email first.');
+            return;
+        }
+
+        const response = await fetch(`/send-otp/?email=${encodeURIComponent(email)}`);
+        const data = await response.json();
+        if (data.success) {
+            alert('OTP sent successfully!');
+        } else {
+            alert('Failed to send OTP. Try again.');
+        }
+    });
+
+    document.getElementById('register-form').addEventListener('submit', function (event) {
+        const username = document.getElementById('username').value;
+
+        const startsWithDigit = /^\d/;
+        const onlyDigits = /^\d+$/;
+
+        if (startsWithDigit.test(username)) {
+            alert('Username cannot start with a number.');
+            event.preventDefault();
+        } else if (onlyDigits.test(username)) {
+            alert('Username cannot contain only numbers.');
+            event.preventDefault();
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,322 @@
+{% extends 'store/base.html' %}
+{% block content %}
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3 class="card-title mb-0">Track Order #{{ order.id }}</h3>
+              {% if order.status in 'pending confirmed processing' %}
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelOrderModal"><i class="fas fa-times-circle me-2"></i>Cancel Order</button>
+              {% endif %}
+            </div>
+
+            <!-- Order Status Timeline -->
+            <div class="timeline mb-4">
+              {% for status, label in order.STATUS_CHOICES %}
+                <div class="timeline-item {% if order.status == status %}active{% endif %}">
+                  <div class="timeline-marker {% if order.status == status %}active{% endif %}">
+                    {% if order.status == status %}
+                      <i class="fas fa-check-circle"></i>
+                    {% else %}
+                      <i class="far fa-circle"></i>
+                    {% endif %}
+                  </div>
+                  <div class="timeline-content">
+                    <h6 class="mb-0">{{ label }}</h6>
+                    {% if order.status == status %}
+                      <small class="text-muted">{{ order.updated_at|date:'F j, Y, g:i a' }}</small>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+
+            <!-- Order Details -->
+            <div class="order-details mt-4">
+              <h5>Order Details</h5>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in order.items.all %}
+                      <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₹{{ item.price }}</td>
+                        <td>₹{{ item.get_cost }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="3" class="text-end">
+                        <strong>Total:</strong>
+                      </td>
+                      <td>
+                        <strong>₹{{ order.total_amount }}</strong>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+
+            {% if order.payment_method in 'card razorpay' %}
+              <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                Since you paid via <strong>{{ order.payment_method|capfirst }}</strong>, the refund will be processed within 5-7 working days after cancellation.
+              </div>
+            {% endif %}
+
+            <!-- Exchanged Product Details (If Exists) -->
+            {% if order.exchange_set.exists %}
+              {% with exchange_request=order.exchange_set.first %}
+                {% if exchange_request.status == 'approved' %}
+                  <div class="exchanged-product mt-4">
+                    <h5>Exchanged Product</h5>
+                    <div class="alert alert-success">Your exchange request has been approved. The new product has been updated in your order.</div>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Product</th>
+                          <th>Price</th>
+                          <th>Exchange Tracking Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ exchange_request.new_product.name }}</td>
+                          <td>₹{{ exchange_request.new_product.price }}</td>
+                          <td>
+                            <span style="color: black; font-size: 20px;" class="badge badge-info">{{ exchange_request.tracking_status|capfirst }}</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                {% endif %}
+              {% endwith %}
+            {% endif %}
+
+            <!-- Shipping Details -->
+            <div class="shipping-details mt-4">
+              <h5>Shipping Details</h5>
+              <p>{{ order.shipping_address }}</p>
+              {% if order.tracking_number %}
+                <p>
+                  <strong>Tracking Number:</strong> {{ order.tracking_number }}
+                </p>
+              {% endif %}
+            </div>
+            <a href="{% url 'download_invoice' order.id %}" class="btn btn-secondary ms-2" style="background-color: #1c5073"><i class="fas fa-file-pdf me-2"></i>Download Invoice</a>
+
+            <!-- Return & Exchange (Only After Delivery) -->
+            {% if order.status|lower == 'delivered' %}
+              {% if not order.return_set.exists and not order.exchange_set.exists %}
+                <div class="mt-4">
+                  <h5>Order Actions</h5>
+                  <div class="action-buttons">
+                    <a href="{% url 'request_return' order.id %}" class="btn btn-warning"><i class="fas fa-undo me-2"></i> Request Return</a>
+                    <a href="{% url 'request_exchange' order.id %}" class="btn btn-info"><i class="fas fa-exchange-alt me-2"></i> Request Exchange</a>
+                  </div>
+                </div>
+              {% else %}
+                <div class="mt-4">
+                  <h5>Return/Exchange Status</h5>
+                  {% if order.return_set.exists %}
+                    {% with return_request=order.return_set.first %}
+                      <div class="alert alert-info">
+                        Return Request Status: {{ return_request.get_status_display }}
+                        <br />
+                        Submitted on: {{ return_request.created_at|date:'F j, Y' }}
+                      </div>
+                      {% if return_request.status == 'approved' %}
+                        <div class="alert alert-success">Your return request has been approved. The refund will be processed at the time of pickup.</div>
+                      {% endif %}
+                    {% endwith %}
+                  {% endif %}
+                  {% if order.exchange_set.exists %}
+                    {% with exchange_request=order.exchange_set.first %}
+                      <div class="alert alert-info">
+                        Exchange Request Status: {{ exchange_request.get_status_display }}
+                        <br />
+                        Submitted on: {{ exchange_request.created_at|date:'F j, Y' }}
+                      </div>
+                    {% endwith %}
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cancel Order Modal (Only Before Shipping) -->
+  {% if order.status in 'pending confirmed processing' %}
+    <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-danger" id="cancelOrderModalLabel"><i class="fas fa-exclamation-circle me-2"></i>Cancel Order</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to cancel this order? This action cannot be undone.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Keep Order</button>
+            <form method="POST" action="{% url 'cancel_order' order.id %}" id="cancelOrderForm">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger" id="confirmCancelBtn">Yes, Cancel Order</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <style>
+    /* Timeline Styling */
+    .timeline {
+      position: relative;
+      padding: 20px 0;
+    }
+    
+    .timeline:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15px;
+      height: 100%;
+      width: 2px;
+      background: #dee2e6;
+    }
+    
+    .timeline-item {
+      position: relative;
+      padding-left: 40px;
+      margin-bottom: 20px;
+    }
+    
+    .timeline-marker {
+      position: absolute;
+      left: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #dee2e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .timeline-marker.active {
+      border-color: #28a745;
+      background: #28a745;
+      color: white;
+    }
+    
+    .timeline-content {
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 4px;
+    }
+    
+    .timeline-item.active .timeline-content {
+      background: #e8f5e9;
+    }
+    
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+    
+    .modal-content {
+      border-radius: 8px;
+    }
+    
+    .modal-header {
+      border-bottom: 1px solid #dee2e6;
+      padding: 1rem;
+    }
+    
+    .modal-footer {
+      border-top: 1px solid #dee2e6;
+      padding: 1rem;
+    }
+    
+    .btn-warning {
+      background-color: #ffc107;
+      border-color: #ffc107;
+      color: #000;
+    }
+    
+    .btn-warning:hover {
+      background-color: #e0a800;
+      border-color: #d39e00;
+      color: #000;
+    }
+    
+    .btn-info {
+      background-color: #17a2b8;
+      border-color: #17a2b8;
+      color: #fff;
+    }
+    
+    .btn-info:hover {
+      background-color: #138496;
+      border-color: #117a8b;
+      color: #fff;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const cancelForm = document.getElementById('cancelOrderForm')
+      const confirmBtn = document.getElementById('confirmCancelBtn')
+      const modal = document.getElementById('cancelOrderModal')
+    
+      if (cancelForm) {
+        cancelForm.addEventListener('submit', function (e) {
+          e.preventDefault()
+          confirmBtn.disabled = true
+          confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Cancelling...'
+          this.submit()
+        })
+      }
+    
+      if (modal) {
+        modal.addEventListener('hidden.bs.modal', function () {
+          if (confirmBtn) {
+            confirmBtn.disabled = false
+            confirmBtn.innerHTML = 'Yes, Cancel Order'
+          }
+        })
+      }
+    })
+  </script>
+{% endblock %}

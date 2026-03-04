@@ -1,0 +1,44 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/custom_admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <img src="{% static 'admin/img/logo.png' %}" alt="Logo" style="height: 32px;">
+    <a href="{% url 'admin:index' %}" style="text-decoration: none; color: var(--text);">
+        Furniture Shop
+    </a>
+</h1>
+{% endblock %}
+
+{% block usertools %}
+<div id="user-tools" style="display: flex; align-items: center; gap: 1rem;">
+    {% if user.is_authenticated %}
+        <span style="font-weight: 500;">{{ user.username }}</span>
+        <div style="width: 1px; height: 24px; background: var(--border);"></div>
+        {% if user.is_staff %}
+            <a href="/" style="text-decoration: none;">View Site</a>
+        {% endif %}
+        <a href="{% url 'admin:password_change' %}" style="text-decoration: none;">Change Password</a>
+        
+        <!-- Logout Form with Confirmation -->
+        <form id="logout-form" action="{% url 'admin:logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="button" onclick="confirmLogout()" style="background: none; border: none; color: inherit; text-decoration: none; cursor: pointer;">Log out</button>
+        </form>
+    {% endif %}
+</div>
+
+<script>
+    function confirmLogout() {
+        if (confirm("Are you sure you want to log out?")) {
+            document.getElementById('logout-form').submit();
+        }
+    }
+</script>
+{% endblock %}

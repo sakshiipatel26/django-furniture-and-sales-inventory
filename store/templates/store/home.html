@@ -1,0 +1,485 @@
+{% extends 'store/base.html' %}
+{% block content %}
+  <div class="hero-section">
+    <div class="hero-content">
+      <!-- Hero content here -->
+    </div>
+  </div>
+
+  <!-- Categories Section -->
+  <div id="categories" class="container my-5 section-bg">
+    <div class="text-center mb-5">
+      <h2 class="section-title">Our Categories</h2>
+      <p class="text-muted category-description">Explore our range of furniture categories</p>
+    </div>
+    <div class="categories-container">
+      {% for category in categories %}
+        <div class="category-card {% if forloop.counter <= 5 %}
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            first-row
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          {% else %}
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            second-row
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          {% endif %}">
+          {% if category.image %}
+            <a href="/category/{{ category.id }}/"><img src="{{ category.image.url }}" class="category-img" alt="{{ category.name }}" /></a>
+          {% endif %}
+          <h6 class="category-name" style="margin-top: 10px;">{{ category.name }}</h6>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Advertisement Section -->
+  <div class="advertisement-section">
+    <div class="advertisement-container">
+      {% if advertisements %}
+        <!-- Static First Poster -->
+        <img src="{{ advertisements.0.image.url }}" alt="{{ advertisements.0.title }}" class="advertisement-img static-ad" />
+      {% endif %}
+
+      <!-- New Arrival Posters (Rotating) -->
+      <div class="rotating-ad-container">
+        {% for ad in advertisements|slice:'1:' %}
+          {% if ad.title == 'New Arrivals' %}
+            <img src="{{ ad.image.url }}" alt="{{ ad.title }}" class="advertisement-img rotating-ad new-arrival-ad" />
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {% for ad in advertisements %}
+      {% if ad.title == 'Anniversary' %}
+        <!-- Static Third Poster (Bottom - Anniversary) -->
+        <img src="{{ ad.image.url }}" alt="{{ ad.title }}" class="advertisement-img static-ad anniversary-ad" />
+      {% endif %}
+    {% endfor %}
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div id="features-section" class="container my-5 section-bg">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 mb-3">
+        <div class="feature-card">
+          <img src="/static/warranty.jpg" class="feature-icon" alt="Warranty" />
+          <p>10 Year Warranty</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-3">
+        <div class="feature-card">
+          <img src="/static/factory.jpg" class="feature-icon" alt="Factory" />
+          <p>Direct Selling: Factory To Customer</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-3">
+        <div class="feature-card">
+          <img src="/static/quality.jpg" class="feature-icon" alt="Quality Check" />
+          <p>66 Quality Checks</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-3">
+        <div class="feature-card">
+          <img src="/static/kd.jpg" class="feature-icon" alt="Kiln Dried" />
+          <p>KD (Kiln Dried) and HT (Heat Treated)</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-3">
+        <div class="feature-card">
+          <img src="/static/childlabour.jpg" class="feature-icon" alt="Ergonomically Designed" />
+          <p>Free of Child labour</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-3">
+        <div class="feature-card">
+          <img src="/static/durability.jpg" class="feature-icon" alt="Durability" />
+          <p>Generations Long Durability</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <!-- Registration Popup (Modal) -->
+{% if not user.is_authenticated %}
+<div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-gradient-primary text-white">
+        <h5 class="modal-title" id="registerModalLabel">Join Our Community</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center p-4">
+        <div class="mb-4">
+          <img src="/static/joinus.jpg" alt="Join Us" class="img-fluid" style="max-width: 150px;" height="200" width="200" />
+        </div>
+        <h4 class="mb-3">Welcome to Our Store!</h4>
+        <p class="text-muted mb-4">Sign up today to enjoy exclusive offers, personalized recommendations, and more.</p>
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg w-100 mb-3"><i class="fas fa-user-plus me-2"></i>Register Now</a>
+        <p class="text-muted mb-0">
+          Already have an account? <a href="{% url 'login' %}" class="text-primary">Login here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+  <style>
+    /* Global Font and Color Theme */
+    body {
+      background: url('/static/Banner8.png') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh; /* Ensures full height */
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Apply a soft background color to white sections */
+    .section-bg {
+      background-color: #e9ecef; /* Light gray */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Poppins', sans-serif;
+      color: #2c3e50;
+    }
+    
+    .section-title {
+      color: #2c3e50;
+      font-weight: 700;
+    }
+    
+    .text-muted {
+      color: #7f8c8d !important;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+      background-size: cover;
+      height: 75vh;
+      display: cover;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 5px solid #ddd;
+    }
+    
+    /* Categories Section */
+    .categories-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    
+    .category-card {
+      width: 18%;
+      max-width: 160px;
+      text-align: center;
+    }
+    
+    .category-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 15px;
+      transition: transform 0.5s ease, box-shadow 0.3s ease, filter 0.3s ease;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .category-img:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+      filter: brightness(1.1);
+    }
+    
+    /* Advertisement Section - Vertical Layout */
+    .advertisement-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .advertisement-img {
+      width: 100%;
+      height: 500px;
+      object-fit: content;
+      border-radius: 15px;
+      transition: opacity 1s ease-in-out;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .static-ad {
+      opacity: 1;
+    }
+    
+    /* Ensure the container is visible even if empty */
+    .rotating-ad-container {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f8f9fa; /* Light background to make it visible */
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    
+    .rotating-ad {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    
+    .active {
+      opacity: 1 !important;
+    }
+    
+    /* Features Section */
+    .feature-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .feature-icon {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px;
+    }
+    
+    .feature-card p {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+    
+    /* Modal Styling */
+    .modal-content {
+      border-radius: 20px;
+      border: none;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
+      background: #fff;
+      animation: popUpEffect 0.4s ease-in-out;
+    }
+    
+    .modal-header {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .modal-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: white; /* Ensure the text is white */
+    }
+    
+    .modal-body {
+      padding: 30px;
+    }
+    
+    .modal-body h4 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+    
+    .modal-body p {
+      font-size: 1rem;
+      color: #7f8c8d;
+      margin-bottom: 20px;
+    }
+    
+    .modal-body .btn {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      border: none;
+      font-size: 1.2rem;
+      padding: 12px 20px;
+      border-radius: 50px;
+      transition: all 0.3s ease-in-out;
+      color: white;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .modal-body .btn:hover {
+      background: linear-gradient(135deg, #2575fc, #6a11cb);
+      transform: scale(1.05);
+      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modal-body a.text-primary {
+      color: #2575fc !important;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .modal-body a.text-primary:hover {
+      text-decoration: underline;
+    }
+    
+    @keyframes popUpEffect {
+      from {
+        transform: scale(0.85);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+
+  <!-- GSAP Falling Animation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      gsap.fromTo(
+        '.furniture-item',
+        { y: -200, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: 'bounce.out'
+        }
+      )
+    })
+    
+    let hasScrolled = false
+    setTimeout(function () {
+      window.addEventListener('scroll', function () {
+        if (!hasScrolled) {
+          var myModal = new bootstrap.Modal(document.getElementById('registrationModal'))
+          myModal.show()
+          hasScrolled = true
+        }
+      })
+    }, 30000) // 5 seconds delay (5000 ms)
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      const newArrivalAds = document.querySelectorAll('.new-arrival-ad');
+  
+      if (newArrivalAds.length === 0) {
+        document.querySelector('.rotating-ad-container').style.display = 'none'; // Hide if no ads
+        return;
+      }
+  
+      let index = 0;
+  
+      function showNextAd() {
+        newArrivalAds.forEach((ad, i) => {
+          ad.classList.remove('active');
+          if (i === index) {
+            ad.classList.add('active');
+          }
+        });
+  
+        index = (index + 1) % newArrivalAds.length;
+      }
+  
+      newArrivalAds[0].classList.add('active'); // Show first ad initially
+      setInterval(showNextAd, 2000); // Rotate ads every 4 seconds
+    });
+
+  </script>
+{% endblock %}

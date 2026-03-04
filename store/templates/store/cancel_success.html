@@ -1,0 +1,87 @@
+{% extends 'store/base.html' %}
+
+{% block style %}
+<style>
+    /* Full viewport centering */
+    .cancel-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8f9fa, #dfe4ea);
+        padding: 20px;
+    }
+
+    /* Cancel card styling */
+    .cancel-card {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        max-width: 500px;
+        text-align: center;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Heading */
+    .cancel-card h1 {
+        color: #e74c3c;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    /* Paragraph */
+    .cancel-card p {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    /* Styled button */
+    .cancel-btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 30px;
+        font-size: 17px;
+        font-weight: 500;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(90deg, #ff4757, #e84118);
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
+        text-decoration: none;
+    }
+
+    .cancel-btn:hover {
+        background: linear-gradient(90deg, #e84118, #c23616);
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(255, 71, 87, 0.5);
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="cancel-container">
+    <div class="cancel-card">
+        <h1>Order Cancelled! ❌</h1>
+        <p>Your cancellation request has been processed successfully.</p>
+        <p>The refund (if applicable) will be initiated at the time of pickup.</p>
+        <a href="{% url 'home' %}" class="cancel-btn">Go to Home</a>
+    </div>
+</div>
+{% endblock %}
